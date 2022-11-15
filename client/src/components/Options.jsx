@@ -1,13 +1,4 @@
-import {
-  ButtonGroup,
-  HStack,
-  Button,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
-} from "@chakra-ui/react";
+import { Button, FormControl, FormLabel, Input, Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useSocketStore } from "../socketStore";
@@ -24,7 +15,7 @@ const Options = ({ children }) => {
   const [idToCall, setIdToCall] = useState("");
 
   return (
-    <div>
+    <Box>
       {/* <HStack>
         <ButtonGroup>
           <Button colorScheme="blue">Save</Button>
@@ -50,16 +41,18 @@ const Options = ({ children }) => {
           onChange={(e) => setIdToCall(e.target.value)}
         />
         {callAccepted && !callEnded ? (
-          <Button colorScheme="blue" onClick={leaveCall}>
+          <Button colorScheme="red" onClick={leaveCall}>
             Hang Up
           </Button>
         ) : (
-          <Button colorScheme="blue">Call</Button>
+          <Button colorScheme="blue" onClick={() => callUser(idToCall)}>
+            Call
+          </Button>
         )}
       </FormControl>
-      Options
+
       {children}
-    </div>
+    </Box>
   );
 };
 

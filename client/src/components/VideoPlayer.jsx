@@ -12,6 +12,10 @@ const VideoPlayer = () => {
   const call = useSocketStore((state) => state.call);
   const stream = useSocketStore((state) => state.stream);
 
+  console.log("callAccepted", callAccepted);
+  console.log("callEnded", callEnded);
+  console.log("userVideo", userVideo);
+
   useEffect(() => {
     getPermission();
   }, []);
@@ -24,15 +28,16 @@ const VideoPlayer = () => {
       {stream && (
         <Box>
           <Heading fontSize="lg">{name || "Name"}</Heading>
-          <video playsInline muted ref={myVideo} autoPlay />
+          <video playsInline ref={myVideo} autoPlay muted />
         </Box>
       )}
 
-      {callAccepted && !callEnded && (
+      {/* && !callEnded */}
+      {callAccepted && (
         // other user's video
         <Box>
           <Heading fontSize="lg">{call.name || "Name"}</Heading>
-          <video playsInline muted ref={userVideo} autoPlay />
+          <video playsInline ref={userVideo} autoPlay muted />
         </Box>
       )}
     </Stack>
