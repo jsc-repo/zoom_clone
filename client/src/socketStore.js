@@ -8,8 +8,16 @@ const socket = io("http://localhost:5050");
 export const useSocketStore = create((set, get) => ({
   stream: null,
   setStream: (currentStream) => set(() => ({ stream: currentStream })),
-  myVideo: createRef(),
-  userVideo: createRef(),
+  myVideo: null,
+  setMyVideo: (myVideoRef) =>
+    set({
+      myVideo: myVideoRef,
+    }),
+  userVideo: null,
+  setUserVideo: (userVideoRef) =>
+    set({
+      userVideo: userVideoRef,
+    }),
   connectionRef: createRef(),
   me: "",
   name: "",
@@ -34,9 +42,7 @@ export const useSocketStore = create((set, get) => ({
       .getUserMedia({ audio: true, video: true })
       .then((currentStream) => {
         get().setStream(currentStream);
-        // console.log("STREAM", get().stream);
         get().myVideo.current.srcObject = currentStream;
-        console.log("MYVIDEO", get().myVideo);
       });
 
     socket.on("me", (id) => {
@@ -80,7 +86,7 @@ export const useSocketStore = create((set, get) => ({
         userToCall: id,
         signalData: data,
         from: get().me,
-        name,
+        name: get().name,
       });
     });
 
@@ -92,6 +98,7 @@ export const useSocketStore = create((set, get) => ({
       get().setCallAccepted();
       peer.signal(signal);
     });
+
     get().connectionRef.current = peer;
   },
 

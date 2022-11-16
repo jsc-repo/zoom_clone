@@ -1,24 +1,28 @@
 import { Box, Heading, Stack } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useSocketStore } from "../socketStore";
 
 const VideoPlayer = () => {
-  const myVideo = useSocketStore((state) => state.myVideo);
-  const userVideo = useSocketStore((state) => state.userVideo);
+  const myVideo = useRef();
+  const userVideo = useRef();
+
   const getPermission = useSocketStore((state) => state.getPermission);
   const name = useSocketStore((state) => state.name);
   const callAccepted = useSocketStore((state) => state.callAccepted);
-  const callEnded = useSocketStore((state) => state.callEndedame);
+  const callEnded = useSocketStore((state) => state.callEnded);
   const call = useSocketStore((state) => state.call);
   const stream = useSocketStore((state) => state.stream);
 
-  console.log("callAccepted", callAccepted);
-  console.log("callEnded", callEnded);
+  const setUserVideoRef = useSocketStore((state) => state.setUserVideo);
+  const setMyVideoRef = useSocketStore((state) => state.setMyVideo);
+
   console.log("userVideo", userVideo);
 
   useEffect(() => {
     getPermission();
-  }, []);
+    setMyVideoRef(myVideo);
+    setUserVideoRef(userVideo);
+  }, [myVideo, userVideo]);
 
   console.log("myVideoRef", myVideo);
 
@@ -32,14 +36,14 @@ const VideoPlayer = () => {
         </Box>
       )}
 
-      {/* && !callEnded */}
-      {callAccepted && (
-        // other user's video
-        <Box>
-          <Heading fontSize="lg">{call.name || "Name"}</Heading>
-          <video playsInline ref={userVideo} autoPlay muted />
-        </Box>
-      )}
+      {callAccepted &&
+        !callEnded(
+          // other user's video
+          <Box>
+            <Heading fontSize="lg">{call.name || "Name"}</Heading>
+            <video playsInline ref={userVideo} autoPlay />
+          </Box>
+        )}
     </Stack>
   );
 };
