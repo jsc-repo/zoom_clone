@@ -16,14 +16,7 @@ const Options = ({ children }) => {
 
   return (
     <Box>
-      {/* <HStack>
-        <ButtonGroup>
-          <Button colorScheme="blue">Save</Button>
-          <Button colorScheme="blue">Save</Button>
-          <Button colorScheme="blue">Save</Button>
-        </ButtonGroup>
-      </HStack> */}
-      <FormControl>
+      <FormControl isRequired>
         <FormLabel>Account Info</FormLabel>
         <Input
           label="Name"

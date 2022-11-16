@@ -1,4 +1,4 @@
-import { Box, Heading, Stack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { useEffect, useRef } from "react";
 import { useSocketStore } from "../socketStore";
 
@@ -22,12 +22,16 @@ const VideoPlayer = () => {
     getPermission();
     setMyVideoRef(myVideo);
     setUserVideoRef(userVideo);
-  }, [myVideo, userVideo]);
+  }, []);
+
+  //   myVideo, userVideo
 
   console.log("myVideoRef", myVideo);
 
   return (
-    <Stack spacing={2}>
+    // <Stack spacing={8} direction={["column", "row"]}>
+    //     </Stack>
+    <Flex justifyContent={"space-between"} direction={["column", "row"]}>
       {/* your video */}
       {stream && (
         <Box>
@@ -36,15 +40,14 @@ const VideoPlayer = () => {
         </Box>
       )}
 
-      {callAccepted &&
-        !callEnded(
-          // other user's video
-          <Box>
-            <Heading fontSize="lg">{call.name || "Name"}</Heading>
-            <video playsInline ref={userVideo} autoPlay />
-          </Box>
-        )}
-    </Stack>
+      {callAccepted && !callEnded && (
+        // other user's video
+        <Box>
+          <Heading fontSize="lg">{call.name || "Name"}</Heading>
+          <video playsInline ref={userVideo} autoPlay />
+        </Box>
+      )}
+    </Flex>
   );
 };
 
